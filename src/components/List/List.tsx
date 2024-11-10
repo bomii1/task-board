@@ -33,7 +33,6 @@ const List: FC<TListsProps> = ({list, boardId}) => {
   const handleTaskClick = (
     boardId: string,
     listId: string,
-    taskId: string, 
     task: ITask
   ) => {
     dispatch(setModalActive(true));
@@ -60,7 +59,7 @@ const List: FC<TListsProps> = ({list, boardId}) => {
             list.tasks.map((task, index) => (
               <div 
                 onClick={() => {
-                  handleTaskClick(boardId, list.listId, task.taskId, task);
+                  handleTaskClick(boardId, list.listId, task);
                 }}
                 key={task.taskId}
               >
