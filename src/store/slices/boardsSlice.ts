@@ -35,6 +35,15 @@ type TDeleteTaskAction = {
 type TDeleteBoardAction = {
     boardId: string
 }
+ 
+type TSortAction = {
+    boardIndex: number,
+    droppableIdStart: string,
+    droppableIdEnd: string,
+    droppableIndexStart: number,
+    droppableIndexEnd: number,
+    draggableId: string
+}
 
 const initialState: TBoardState = {
     modalActive: false,
@@ -78,7 +87,7 @@ const initialState: TBoardState = {
                     listName: 'List 2',
                     tasks: [
                         {
-                            taskId: 'task-0',
+                            taskId: 'task-4',
                             taskName: 'Task 1',
                             taskDescription: 'Description',
                             taskOwner: 'Jeong'
@@ -182,9 +191,35 @@ const boardsSlice = createSlice({
                 }
                 : board
             )
+        },
+        sort: (state, {payload}: PayloadAction<TSortAction>) => {
+            // same list
+            if (payload.droppableIdStart === payload.droppableIdEnd) {
+                const list = state.boardArray[payload.boardIndex].lists.find(
+                    list => list.listId === payload.droppableIdStart
+                )
+
+                // 변경시키는 아이템을 배열에서 지워주기
+                // return 값으로 지워진 아이템을 잡아줍니다
+                const card= list?.tasks.splice(payload.droppableIndexStart, 1);
+                list?.tasks.splice(payload.droppableIndexEnd, 0, ...card!);
+            }
+
+            // other list
+            if (payload.droppableIdStart !== payload.droppableIdEnd) {
+                const listStart = state.boardArray[payload.boardIndex].lists.find(
+                    list => list.listId === payload.droppableIdStart
+                )
+
+                const card = listStart!.tasks.splice(payload.droppableIndexStart, 1);
+                const listEnd = state.boardArray[payload.boardIndex].lists.find(
+                    list => list.listId === payload.droppableIdEnd
+                )
+                listEnd?.tasks.splice(payload.droppableIndexEnd, 0, ...card);
+            }
         }
     }
 })
 
-export const { addBoard, deleteList, setModalActive, addList, addTask, updateTask, deleteTask, deleteBoard } = boardsSlice.actions;
+export const { addBoard, deleteList, setModalActive, addList, addTask, updateTask, deleteTask, deleteBoard, sort } = boardsSlice.actions;
 export const boardsReducer = boardsSlice.reducer;
