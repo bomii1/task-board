@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { IList, ITask } from '../../types'
 import { GrSubtract } from 'react-icons/gr'
 import Task from '../Task/Task'

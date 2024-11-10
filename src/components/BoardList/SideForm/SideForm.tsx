@@ -13,7 +13,7 @@ type TSideFormProps = {
   React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const SideForm: FC<TSideFormProps> = ({isFormOpen, setIsFormOpen}) => {
+const SideForm: FC<TSideFormProps> = ({setIsFormOpen}) => {
 
   const [inputText, setInputText] = useState('');
   const dispatch = useTypedDispatch();
